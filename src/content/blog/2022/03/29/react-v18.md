@@ -70,7 +70,7 @@ Para obtener más información, consulta nuestra publicación anterior: [Como ac
 
 ## Suspense in Data Frameworks {/*suspense-in-data-frameworks*/}
 
-In React 18, you can start using [Suspense](/reference/react/Suspense) for data fetching in opinionated frameworks like Relay, Next.js, Hydrogen, or Remix. Ad hoc data fetching with Suspense is technically possible, but still not recommended as a general strategy.
+En React 18, puedes comenzar a usar [Suspense](/reference/react/Suspense) para la obtención de datos en frameworks frecuentes como Relay, Next.js, Hydrogen, or Remix. La obtención ad hoc de datos con Suspense es técnicamente posible, pero aún no se recomienda como una estrategia general.
 
 In the future, we may expose additional primitives that could make it easier to access your data with Suspense, perhaps without the use of an opinionated framework. However, Suspense works best when it’s deeply integrated into your application’s architecture: your router, your data layer, and your server rendering environment. So even long term, we expect that libraries and frameworks will play a crucial role in the React ecosystem.
 
