@@ -163,74 +163,73 @@ Suspense en React 18 funciona mejor cuando se combina con la API de transición.
 
 Para más información, consulta el RFC para [Suspense en React 18](https://github.com/reactjs/rfcs/blob/main/text/0213-suspense-in-react-18.md).
 
-### New Client and Server Rendering APIs {/*new-client-and-server-rendering-apis*/}
+### Nuevas API de Renderizado en Cliente y Servidor {/*new-client-and-server-rendering-apis*/}
 
-In this release we took the opportunity to redesign the APIs we expose for rendering on the client and server. These changes allow users to continue using the old APIs in React 17 mode while they upgrade to the new APIs in React 18.
+En esta versión, aprovechamos la oportunidad para rediseñar las API que exponemos para el renderizado en el cliente y en el servidor. Estos cambios permiten a los usuarios seguir utilizando las antiguas API en el modo React 17 mientras actualizan a las nuevas API en React 18.
 
-#### React DOM Client {/*react-dom-client*/}
+#### Cliente React DOM {/*react-dom-client*/}
 
-These new APIs are now exported from `react-dom/client`:
+Estas nuevas API son exportadas desde `react-dom/client`:
 
-* `createRoot`: New method to create a root to `render` or `unmount`. Use it instead of `ReactDOM.render`. New features in React 18 don't work without it.
-* `hydrateRoot`: New method to hydrate a server rendered application. Use it instead of  `ReactDOM.hydrate` in conjunction with the new React DOM Server APIs. New features in React 18 don't work without it.
+* `createRoot`: Nuevo metodo para crear un root para `render`(renderizar) o `unmount` (desmontar). Usalo en lugar de `ReactDOM.render`. Las nuevas características en React 18 no funcionan sin él.
+* `hydrateRoot`: Nuevo método para hidratar una aplicación renderizada en el servidor. Úsalo en lugar de `ReactDOM.hydrate` en conjunto con las nuevas API de React DOM Server. Las nuevas características en React 18 no funcionan sin él.
 
-Both `createRoot` and `hydrateRoot` accept a new option called `onRecoverableError` in case you want to be notified when React recovers from errors during rendering or hydration for logging. By default, React will use [`reportError`](https://developer.mozilla.org/en-US/docs/Web/API/reportError), or `console.error` in the older browsers.
+Tanto `createRoot` como `hydrateRoot` aceptan una nueva opción llamada `onRecoverableError` en el caso de que necesites ser notificado cuando React recupere errores durante el renderizado o la hidratación para el registro. Por defecto, React usará [`reportError`](https://developer.mozilla.org/en-US/docs/Web/API/reportError), o `console.error` en navegadores antiguos.
 
-[See docs for React DOM Client here](/reference/react-dom/client).
+[Consulta la documentación de Cliente React DOM aquí](/reference/react-dom/client).
 
-#### React DOM Server {/*react-dom-server*/}
+#### Servidor React DOM {/*react-dom-server*/}
 
-These new APIs are now exported from `react-dom/server` and have full support for streaming Suspense on the server:
+Estas nuevas APIs son exportadas desde `react-dom/server` y tienen soporte completo para Suspense en el servidor:
+* `renderToPipeableStream`: para transmisión en entornos de Node
+* `renderToReadableStream`: para entornos de tiempo de ejecución modernos, como Deno y Cloudflare workers.
 
-* `renderToPipeableStream`: for streaming in Node environments.
-* `renderToReadableStream`: for modern edge runtime environments, such as Deno and Cloudflare workers.
+El método existente `renderToString` sigue en funcionamiento, pero se desaconseja su uso.
 
-The existing `renderToString` method keeps working but is discouraged.
+[Consulta la documentación de Servidor React DOM aquí](/reference/react-dom/server).
 
-[See docs for React DOM Server here](/reference/react-dom/server).
+### Nuevos Comportamientos del Modo Estricto {/*new-strict-mode-behaviors*/}
 
-### New Strict Mode Behaviors {/*new-strict-mode-behaviors*/}
+En el futuro, nos gustaría agregar una función que permita a React agregar y eliminar secciones de la interfaz de usuario mientras se preserva el estado. Por ejemplo, cuando un usuario cambia de pestaña y vuelve, React debería poder mostrar inmediatamente la pantalla anterior. Para lograr esto, React desmontaría y volvería a montar los árboles utilizando el mismo estado del componente como antes.
 
-In the future, we’d like to add a feature that allows React to add and remove sections of the UI while preserving state. For example, when a user tabs away from a screen and back, React should be able to immediately show the previous screen. To do this, React would unmount and remount trees using the same component state as before.
+Esta característica proporcionará un mejor rendimiento por defecto en las aplicaciones de React, pero requiere que los componentes sean resistentes a que los efectos se monten y destruyan varias veces. La mayoría de los efectos funcionarán sin cambios, pero algunos efectos asumen que solo se montan o destruyen una vez.
 
-This feature will give React apps better performance out-of-the-box, but requires components to be resilient to effects being mounted and destroyed multiple times. Most effects will work without any changes, but some effects assume they are only mounted or destroyed once.
+Para ayudar a detectar estos problemas, React 18 introduce una nueva verificación exclusiva para el modo estricto en el entorno de desarrollo. Esta nueva verificación desmontará y volverá a montar automáticamente cada componente cuando se monte por primera vez, restaurando el estado anterior en el segundo montaje.
 
-To help surface these issues, React 18 introduces a new development-only check to Strict Mode. This new check will automatically unmount and remount every component, whenever a component mounts for the first time, restoring the previous state on the second mount.
-
-Before this change, React would mount the component and create the effects:
-
-```
-* React mounts the component.
-  * Layout effects are created.
-  * Effects are created.
-```
-
-
-With Strict Mode in React 18, React will simulate unmounting and remounting the component in development mode:
+Antes de este cambio, React montaba el componente y creaba los efectos:
 
 ```
-* React mounts the component.
-  * Layout effects are created.
-  * Effects are created.
-* React simulates unmounting the component.
-  * Layout effects are destroyed.
-  * Effects are destroyed.
-* React simulates mounting the component with the previous state.
-  * Layout effects are created.
-  * Effects are created.
+* React monta el componente.
+  * Se crean los efectos de diseño (layout effects).
+  * Se crean los efectos.
 ```
 
-[See docs for ensuring reusable state here](/reference/react/StrictMode#fixing-bugs-found-by-re-running-effects-in-development).
 
-### New Hooks {/*new-hooks*/}
+Con el modo estricto (Strict Mode) en React 18, React simulará el desmontaje y remontaje del componente en modo de desarrollo:
+
+```
+* React monta el componente.
+  * Se crean los efectos de diseño (layout effects).
+  * Se crean los efectos.
+* React simula el desmontaje del componente.
+  * Se destruyen los efectos de diseño (layout effects).
+  * Se destruyen los efectos.
+* React simula el montaje del components con el estado anterior.
+  * Se crean los efectos de diseño (layout effects).
+  * Se crean los efectos.
+```
+
+[Consulta la documentación sobre cómo garantizar el estado reutilizable aquí](/reference/react/StrictMode#fixing-bugs-found-by-re-running-effects-in-development).
+
+### Nuevos Hooks {/*new-hooks*/}
 
 #### useId {/*useid*/}
 
-`useId` is a new hook for generating unique IDs on both the client and server, while avoiding hydration mismatches. It is primarily useful for component libraries integrating with accessibility APIs that require unique IDs. This solves an issue that already exists in React 17 and below, but it's even more important in React 18 because of how the new streaming server renderer delivers HTML out-of-order. [See docs here](/reference/react/useId).
+`useId` es un nuevo gancho (hook) para generar IDs unicos tanto en el cliente como en el servidor, evitando desajustes en la hidratación. Es especialmente útil para bibliotecas de componentes que se integran con API de accesibilidad que requieren identificadores únicos. Esto resuelve un problema que ya existe en React 17 y versiones anteriores, pero es aún más importante en React 18 debido a cómo el nuevo renderizador de servidor en streaming entrega el HTML sin un orden específico. [Consulta la documentación](/reference/react/useId).
 
 > Note
 >
-> `useId` is **not** for generating [keys in a list](/learn/rendering-lists#where-to-get-your-key). Keys should be generated from your data.
+> `useId` **no está** diseñado para generar [llaves en una lista](/learn/rendering-lists#where-to-get-your-key). Las llaves deben ser generadas a partir de tus datos.
 
 #### useTransition {/*usetransition*/}
 
