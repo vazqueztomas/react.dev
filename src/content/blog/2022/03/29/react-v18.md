@@ -233,27 +233,27 @@ Con el modo estricto (Strict Mode) en React 18, React simulará el desmontaje y 
 
 #### useTransition {/*usetransition*/}
 
-`useTransition` and `startTransition` let you mark some state updates as not urgent. Other state updates are considered urgent by default. React will allow urgent state updates (for example, updating a text input) to interrupt non-urgent state updates (for example, rendering a list of search results). [See docs here](/reference/react/useTransition)
+`useTransition` y `startTransition` te permiten marcar algunas actualizaciones de estado como no urgentes. Otras actualizaciones de estado se consideran urgentes de manera predeterminada. React permitirá que las actualizaciones de estado urgentes (por ejemplo, actualizar un campo de texto) interrumpan las actualizaciones de estado no urgentes (por ejemplo, renderizar una lista de resultados de búsqueda). [Consulta la documentación aquí](/reference/react/useTransition)
 
 #### useDeferredValue {/*usedeferredvalue*/}
 
-`useDeferredValue` lets you defer re-rendering a non-urgent part of the tree. It is similar to debouncing, but has a few advantages compared to it. There is no fixed time delay, so React will attempt the deferred render right after the first render is reflected on the screen. The deferred render is interruptible and doesn't block user input. [See docs here](/reference/react/useDeferredValue).
+`useDeferredValue` te permite posponer el re-renderizado de una parte no urgente del árbol. Es similar a la técnica de debounce, pero tiene algunas ventajas en comparación con esta. No hay un retraso de tiempo fijo, por lo que React intentará el renderizado diferido justo después de que el primer renderizado se refleje en la pantalla. El renderizado diferido es interrumpible y no bloquea la entrada del usuario. [Consulta la documentación aquí](/reference/react/useDeferredValue).
 
 #### useSyncExternalStore {/*usesyncexternalstore*/}
 
-`useSyncExternalStore` is a new hook that allows external stores to support concurrent reads by forcing updates to the store to be synchronous. It removes the need for useEffect when implementing subscriptions to external data sources, and is recommended for any library that integrates with state external to React. [See docs here](/reference/react/useSyncExternalStore).
+`useSyncExternalStore` es un nuevo hook que permite a las tiendas externas admitir lecturas concurrentes al forzar que las actualizaciones de la tienda sean síncronas. Elimina la necesidad de usar useEffect al implementar suscripciones a fuentes de datos externas, y se recomienda para cualquier biblioteca que se integre con un estado externo a React. [Consulte la documentación aquí](/reference/react/useSyncExternalStore).
 
 > Note
 >
-> `useSyncExternalStore` is intended to be used by libraries, not application code.
+> `useSyncExternalStore` está destinado a ser utilizado por bibliotecas, no por el código de aplicación.
 
 #### useInsertionEffect {/*useinsertioneffect*/}
 
-`useInsertionEffect` is a new hook that allows CSS-in-JS libraries to address performance issues of injecting styles in render. Unless you’ve already built a CSS-in-JS library we don’t expect you to ever use this. This hook will run after the DOM is mutated, but before layout effects read the new layout. This solves an issue that already exists in React 17 and below, but is even more important in React 18 because React yields to the browser during concurrent rendering, giving it a chance to recalculate layout. [See docs here](/reference/react/useInsertionEffect).
+`useInsertionEffect`  es un nuevo hook que permite a las bibliotecas de CSS-in-JS abordar problemas de rendimiento al inyectar estilos durante el renderizado. A menos que ya hayas construido una biblioteca de CSS-in-JS, no esperamos que nunca lo utilices. Este hook se ejecutará después de que el DOM haya sido mutado, pero antes de que los efectos de diseño (layout effects) lean el nuevo diseño. Esto resuelve un problema que ya existe en React 17 y versiones anteriores, pero es aún más importante en React 18 porque React cede al navegador durante el renderizado concurrente, dándole la oportunidad de recalcular el diseño. [Consulta la documentación aquí](/reference/react/useInsertionEffect).
 
 > Note
 >
-> `useInsertionEffect` is intended to be used by libraries, not application code.
+> `useInsertionEffect` está destinado a ser utilizado por bibliotecas, no por el código de aplicación.
 
 ## How to Upgrade {/*how-to-upgrade*/}
 
