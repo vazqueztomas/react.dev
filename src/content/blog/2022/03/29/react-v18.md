@@ -107,7 +107,7 @@ setTimeout(() => {
 
 Para más información, consulta este artículo sobre la [agrupación automática para reducir las re-renderizaciones en React 18](https://github.com/reactwg/react-18/discussions/21).
 
-### Nueva Función: Trancisiones {/*new-feature-transitions*/}
+### Nueva Característica: Trancisiones {/*new-feature-transitions*/}
 
 Una transición es un nuevo concepto en React para distinguir entre actualizaciones urgentes y no-urgentes.
 
@@ -144,7 +144,7 @@ Las actualizaciones envueltas en startTransition se manejan como no urgentes y s
 
 [Consulta la documentación de transiciones aquí](/reference/react/useTransition).
 
-### Nuevas Funciones Suspense {/*new-suspense-features*/}
+### Nuevas Características Suspense {/*new-suspense-features*/}
 
 Suspense te permite especificar declarativamente el estado de carga para una parte del árbol de componentes si aún no está listo para mostrarse:
 
@@ -153,7 +153,6 @@ Suspense te permite especificar declarativamente el estado de carga para una par
   <Comments />
 </Suspense>
 ```
-
 Suspense convierte el "estado de carga de la interfaz de usuario" en un concepto declarativo de primera clase en el modelo de programación de React. Esto nos permite construir características de nivel superior sobre él.
 
 Introdujimos una versión limitada de Suspense hace varios años. Sin embargo, el único caso de uso compatible era la división de código con React.lazy, y no se admitía en absoluto al renderizar en el servidor.
