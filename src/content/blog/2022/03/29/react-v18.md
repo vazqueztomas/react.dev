@@ -30,27 +30,27 @@ A continuación se muestra una descripción completa de lo que puedes esperar en
 
 <Note>
 
-For React Native users, React 18 will ship in React Native with the New React Native Architecture. For more information, see the [React Conf keynote here](https://www.youtube.com/watch?v=FZ0cG47msEk&t=1530s).
+Para los usuarios de React Native, React 18 se lanzará en React Native con la Nueva Arquitectura de React Native. Para más información, puedes ver la [presentación oficial de la React Conf aquí](https://www.youtube.com/watch?v=FZ0cG47msEk&t=1530s).
 
 </Note>
 
-## What is Concurrent React? {/*what-is-concurrent-react*/}
+## Que es React Concurrente? {/*what-is-concurrent-react*/}
 
-The most important addition in React 18 is something we hope you never have to think about: concurrency. We think this is largely true for application developers, though the story may be a bit more complicated for library maintainers.
+La adición más importante en React 18 es algo en lo que esperamos que nunca tengas que pensar: la concurrencia. Creemos que esto es en gran medida cierto para los desarrolladores de aplicaciones, aunque la situación puede ser un poco más complicada para los mantenedores de bibliotecas.
 
-Concurrency is not a feature, per se. It's a new behind-the-scenes mechanism that enables React to prepare multiple versions of your UI at the same time. You can think of concurrency as an implementation detail — it's valuable because of the features that it unlocks. React uses sophisticated techniques in its internal implementation, like priority queues and multiple buffering. But you won't see those concepts anywhere in our public APIs.
+La concurrencia no es una característica en sí misma. Es un nuevo mecanismo detrás de escena que permite a React preparar múltiples versiones de tu interfaz de usuario al mismo tiempo. Puedes pensar en la concurrencia como un detalle de implementación: es valiosa debido a las características que desbloquea. React utiliza técnicas sofisticadas en su implementación interna, como colas de prioridad y múltiples búferes. Pero no verás esos conceptos en ninguna de nuestras APIs públicas.
 
-When we design APIs, we try to hide implementation details from developers. As a React developer, you focus on *what* you want the user experience to look like, and React handles *how* to deliver that experience. So we don’t expect React developers to know how concurrency works under the hood.
+Cuando diseñamos las APIs, tratamos de ocultar los detalles de implementación a los desarrolladores. Como desarrollador de React, te enfocas en cómo quieres que sea la experiencia del usuario y React se encarga de cómo ofrecer esa experiencia. Por lo tanto, no esperamos que los desarrolladores de React sepan cómo funciona la concurrencia bajo el capó.
 
-However, Concurrent React is more important than a typical implementation detail — it's a foundational update to React's core rendering model. So while it's not super important to know how concurrency works, it may be worth knowing what it is at a high level.
+Sin embargo, React Concurrente es más importante que un simple detalle de implementación, es una actualización fundamental en el modelo de renderizado central de React. Entonces, aunque no es muy importante saber cómo funciona la concurrencia, puede valer la pena saber qué es a grandes rasgos.
 
-A key property of Concurrent React is that rendering is interruptible. When you first upgrade to React 18, before adding any concurrent features, updates are rendered the same as in previous versions of React — in a single, uninterrupted, synchronous transaction. With synchronous rendering, once an update starts rendering, nothing can interrupt it until the user can see the result on screen.
+Una propiedad clave de React Concurrente es que el renderizado es interrumpible. Cuando actualizas por primera vez a React 18, antes de agregar cualquier característica concurrente, las actualizaciones se renderizan de la misma manera que en versiones anteriores de React: en una transacción única, sin interrupciones y sincrónica. Con el renderizado sincrónico, una vez que comienza el renderizado de una actualización, nada puede interrumpirlo hasta que el usuario pueda ver el resultado en la pantalla.
 
-In a concurrent render, this is not always the case. React may start rendering an update, pause in the middle, then continue later. It may even abandon an in-progress render altogether. React guarantees that the UI will appear consistent even if a render is interrupted. To do this, it waits to perform DOM mutations until the end, once the entire tree has been evaluated. With this capability, React can prepare new screens in the background without blocking the main thread. This means the UI can respond immediately to user input even if it’s in the middle of a large rendering task, creating a fluid user experience.
+En un renderizado concurrente, esto no siempre es el caso. React puede comenzar a renderizar una actualización, pausar en el medio y luego continuar más tarde. Incluso puede abandonar por completo un renderizado en progreso. React garantiza que la interfaz de usuario se mantendrá consistente incluso si se interrumpe un renderizado. Para lograr esto, espera para realizar mutaciones en el DOM hasta el final, una vez que se ha evaluado todo el árbol. Con esta capacidad, React puede preparar nuevas pantallas en segundo plano sin bloquear el hilo principal. Esto significa que la interfaz de usuario puede responder de inmediato a la entrada del usuario incluso si se encuentra en medio de una tarea de renderizado grande, creando una experiencia de usuario fluida.
 
-Another example is reusable state. Concurrent React can remove sections of the UI from the screen, then add them back later while reusing the previous state. For example, when a user tabs away from a screen and back, React should be able to restore the previous screen in the same state it was in before. In an upcoming minor, we're planning to add a new component called `<Offscreen>` that implements this pattern. Similarly, you’ll be able to use Offscreen to prepare new UI in the background so that it’s ready before the user reveals it.
+Otro ejemplo es el estado reutilizable. React Concurrente puede eliminar secciones de la interfaz de usuario de la pantalla y luego agregarlas nuevamente más tarde, reutilizando el estado anterior. Por ejemplo, cuando un usuario cambia de pestaña en una pantalla y vuelve, React debería poder restaurar la pantalla anterior en el mismo estado en el que se encontraba antes. En una próxima versión menor, planeamos agregar un nuevo componente llamado `<Offscreen>` que implementa este patrón. Del mismo modo, podrás utilizar Offscreen para preparar una nueva interfaz de usuario en segundo plano para que esté lista antes de que el usuario la revele.
 
-Concurrent rendering is a powerful new tool in React and most of our new features are built to take advantage of it, including Suspense, transitions, and streaming server rendering. But React 18 is just the beginning of what we aim to build on this new foundation.
+El renderizado concurrente es una poderosa herramienta nueva en React y la mayoría de nuestras nuevas características están diseñadas para aprovecharla, incluyendo Suspense, transiciones y renderizado en tiempo real en el servidor. Pero React 18 es solo el comienzo de lo que buscamos construir sobre esta nueva base.
 
 ## Gradually Adopting Concurrent Features {/*gradually-adopting-concurrent-features*/}
 
