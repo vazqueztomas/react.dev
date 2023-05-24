@@ -52,21 +52,21 @@ Otro ejemplo es el estado reutilizable. React Concurrente puede eliminar seccion
 
 El renderizado concurrente es una poderosa herramienta nueva en React y la mayoría de nuestras nuevas características están diseñadas para aprovecharla, incluyendo Suspense, transiciones y renderizado en tiempo real en el servidor. Pero React 18 es solo el comienzo de lo que buscamos construir sobre esta nueva base.
 
-## Gradually Adopting Concurrent Features {/*gradually-adopting-concurrent-features*/}
+## Adoptando Gradualmente las Características Concurrentes {/*gradually-adopting-concurrent-features*/}
 
-Technically, concurrent rendering is a breaking change. Because concurrent rendering is interruptible, components behave slightly differently when it is enabled.
+Técnicamente, el renderizado concurrente es un cambio disruptivo. Debido a que el renderizado concurrente es interrumpible, los componentes se comportan de manera ligeramente diferente cuando está habilitado.
 
-In our testing, we've upgraded thousands of components to React 18. What we've found is that nearly all existing components "just work" with concurrent rendering, without any changes. However, some of them may require some additional migration effort. Although the changes are usually small, you'll still have the ability to make them at your own pace. The new rendering behavior in React 18 is **only enabled in the parts of your app that use new features.**
+En nuestras pruebas, hemos actualizado miles de componentes a React 18. Lo que hemos encontrado es que casi todos los componentes existentes "simplemente funcionan" con el renderizado concurrente, sin necesidad de realizar cambios. Sin embargo, algunos de ellos pueden requerir un esfuerzo adicional de migración. Aunque los cambios suelen ser pequeños, aún tienes la capacidad de hacerlos a tu propio ritmo. El nuevo comportamiento de renderizado en React 18 **solo se activa en las partes de tu aplicación que utilizan nuevas características.**
 
-The overall upgrade strategy is to get your application running on React 18 without breaking existing code. Then you can gradually start adding concurrent features at your own pace. You can use [`<StrictMode>`](/reference/react/StrictMode) to help surface concurrency-related bugs during development. Strict Mode doesn't affect production behavior, but during development it will log extra warnings and double-invoke functions that are expected to be idempotent. It won't catch everything, but it's effective at preventing the most common types of mistakes.
+La estrategia general de actualización consiste en hacer que tu aplicación funcione con React 18 sin romper el código existente. Luego, puedes comenzar gradualmente a agregar características concurrentes a tu propio ritmo. Puedes utilizar [`<StrictMode>`](/reference/react/StrictMode) para ayudar a detectar errores relacionados con la concurrencia durante el desarrollo. Strict Mode no afecta el comportamiento en producción, pero durante el desarrollo mostrará advertencias adicionales y duplicará la invocación de funciones que se espera que sean idempotentes. No detectará todo, pero es efectivo para prevenir los errores más comunes.
 
-After you upgrade to React 18, you’ll be able to start using concurrent features immediately. For example, you can use startTransition to navigate between screens without blocking user input. Or useDeferredValue to throttle expensive re-renders.
+Después de actualizar a React 18, podrás comenzar a utilizar características concurrentes de inmediato. Por ejemplo, puedes utilizar startTransition para navegar entre pantallas sin bloquear la entrada del usuario. O usar useDeferredValue para limitar la frecuencia de las costosas re-renderizaciones.
 
-However, long term, we expect the main way you’ll add concurrency to your app is by using a concurrent-enabled library or framework. In most cases, you won’t interact with concurrent APIs directly. For example, instead of developers calling startTransition whenever they navigate to a new screen, router libraries will automatically wrap navigations in startTransition.
+Sin embargo, a largo plazo, esperamos que la forma principal de agregar concurrencia a tu aplicación sea utilizando una biblioteca o marco de trabajo compatible con la concurrencia. En la mayoría de los casos, no interactuarás directamente con las APIs concurrentes. Por ejemplo, en lugar de que los desarrolladores llamen a startTransition cada vez que naveguen a una nueva pantalla, las bibliotecas de enrutamiento envolverán automáticamente las navegaciones en startTransition.
 
-It may take some time for libraries to upgrade to be concurrent compatible. We’ve provided new APIs to make it easier for libraries to take advantage of concurrent features. In the meantime, please be patient with maintainers as we work to gradually migrate the React ecosystem.
+Puede llevar algún tiempo que las bibliotecas se actualicen para ser compatibles con la concurrencia. Hemos proporcionado nuevas APIs para facilitar a las bibliotecas aprovechar las características concurrentes. Mientras tanto, te pedimos paciencia con los mantenedores mientras trabajamos en la migración gradual del ecosistema de React.
 
-For more info, see our previous post: [How to upgrade to React 18](/blog/2022/03/08/react-18-upgrade-guide).
+Para obtener más información, consulta nuestra publicación anterior: [Como actualizar a React 18](/blog/2022/03/08/react-18-upgrade-guide).
 
 ## Suspense in Data Frameworks {/*suspense-in-data-frameworks*/}
 
