@@ -72,41 +72,40 @@ Para obtener más información, consulta nuestra publicación anterior: [Como ac
 
 En React 18, puedes comenzar a usar [Suspense](/reference/react/Suspense) para la obtención de datos en frameworks frecuentes como Relay, Next.js, Hydrogen, or Remix. La obtención ad hoc de datos con Suspense es técnicamente posible, pero aún no se recomienda como una estrategia general.
 
-In the future, we may expose additional primitives that could make it easier to access your data with Suspense, perhaps without the use of an opinionated framework. However, Suspense works best when it’s deeply integrated into your application’s architecture: your router, your data layer, and your server rendering environment. So even long term, we expect that libraries and frameworks will play a crucial role in the React ecosystem.
+En el futuro, es posible que expongamos primitivas adicionales que faciliten el acceso a tus datos con Suspense, tal vez sin necesidad de utilizar un marco de trabajo opinionado. Sin embargo, Suspense funciona mejor cuando está profundamente integrado en la arquitectura de tu aplicación: en tu enrutador, en tu capa de datos y en tu entorno de renderizado en el servidor. Por lo tanto, incluso a largo plazo, esperamos que las bibliotecas y marcos de trabajo desempeñen un papel crucial en el ecosistema de React.
 
-As in previous versions of React, you can also use Suspense for code splitting on the client with React.lazy. But our vision for Suspense has always been about much more than loading code — the goal is to extend support for Suspense so that eventually, the same declarative Suspense fallback can handle any asynchronous operation (loading code, data, images, etc).
+Al igual que en versiones anteriores de React, también puedes utilizar Suspense para el fragmento de código en el cliente con React.lazy. Pero nuestra visión de Suspense siempre ha sido mucho más que cargar código; el objetivo es ampliar el soporte para Suspense para que eventualmente, el mismo fallback declarativo de Suspense pueda manejar cualquier operación asíncrona (carga de código, datos, imágenes, etc.)
 
-## Server Components is Still in Development {/*server-components-is-still-in-development*/}
+## Server Components Está aún en Desarrollo {/*server-components-is-still-in-development*/}
 
-[**Server Components**](/blog/2020/12/21/data-fetching-with-react-server-components) is an upcoming feature that allows developers to build apps that span the server and client, combining the rich interactivity of client-side apps with the improved performance of traditional server rendering. Server Components is not inherently coupled to Concurrent React, but it’s designed to work best with concurrent features like Suspense and streaming server rendering.
+[**Server Components**](/blog/2020/12/21/data-fetching-with-react-server-components) es una característica próxima que permite a los desarrolladores crear aplicaciones que abarcan el servidor y el cliente, combinando la interactividad completa de las aplicaciones del lado del cliente con el rendimiento mejorado del renderizado tradicional en el servidor. Server Components no está inherentemente vinculado a Concurrent React, pero está diseñado para funcionar mejor con características concurrentes como Suspense y el renderizado en el servidor en streaming.
 
-Server Components is still experimental, but we expect to release an initial version in a minor 18.x release. In the meantime, we’re working with frameworks like Next.js, Hydrogen, and Remix to advance the proposal and get it ready for broad adoption.
+Server Components todavía está en fase experimental, pero esperamos lanzar una versión inicial en una versión menor de 18.x. Mientras tanto, estamos trabajando con frameworks como Next.js, Hydrogen y Remix para avanzar en la propuesta y prepararla para su adopción generalizada.
 
-## What's New in React 18 {/*whats-new-in-react-18*/}
+## Que Hay De Nuevo en React 18 {/*whats-new-in-react-18*/}
 
-### New Feature: Automatic Batching {/*new-feature-automatic-batching*/}
+### Nueva Función: Agrupación Automática {/*new-feature-automatic-batching*/}
 
-Batching is when React groups multiple state updates into a single re-render for better performance. Without automatic batching, we only batched updates inside React event handlers. Updates inside of promises, setTimeout, native event handlers, or any other event were not batched in React by default. With automatic batching, these updates will be batched automatically:
+La agrupación (batching) es cuando React agrupa múltiples actualizaciones de estado en una sola re-renderización para mejorar el rendimiento. Sin la agrupación automática, solo se agrupaban las actualizaciones dentro de los controladores de eventos de React. Las actualizaciones dentro de promesas, setTimeout, controladores de eventos nativos u otros eventos no se agrupaban automáticamente en React por defecto. Con la agrupación automática, estas actualizaciones se agruparán automáticamente:
 
 
 ```js
-// Before: only React events were batched.
+// Antes: solo los eventos de React se agrupaban.
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will render twice, once for each state update (no batching)
+  // React se renderizará dos veces, una vez por cada actualización de estado (sin agrupación).
 }, 1000);
-
-// After: updates inside of timeouts, promises,
-// native event handlers or any other event are batched.
+// Después: las actualizaciones dentro de timeouts, promesas,
+// controladores de eventos nativos o cualquier otro evento se agrupan.
 setTimeout(() => {
   setCount(c => c + 1);
   setFlag(f => !f);
-  // React will only re-render once at the end (that's batching!)
+  // React solo se volverá a renderizar una vez al final (¡eso es agrupación!).
 }, 1000);
 ```
 
-For more info, see this post for [Automatic batching for fewer renders in React 18](https://github.com/reactwg/react-18/discussions/21).
+Para más información, consulta este artículo sobre la [agrupación automática para reducir las re-renderizaciones en React 18](https://github.com/reactwg/react-18/discussions/21).
 
 ### New Feature: Transitions {/*new-feature-transitions*/}
 
