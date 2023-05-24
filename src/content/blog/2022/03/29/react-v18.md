@@ -107,47 +107,46 @@ setTimeout(() => {
 
 Para más información, consulta este artículo sobre la [agrupación automática para reducir las re-renderizaciones en React 18](https://github.com/reactwg/react-18/discussions/21).
 
-### New Feature: Transitions {/*new-feature-transitions*/}
+### Nueva Función: Trancisiones {/*new-feature-transitions*/}
 
-A transition is a new concept in React to distinguish between urgent and non-urgent updates.
+Una transición es un nuevo concepto en React para distinguir entre actualizaciones urgentes y no-urgentes.
 
-* **Urgent updates** reflect direct interaction, like typing, clicking, pressing, and so on.
-* **Transition updates** transition the UI from one view to another.
+* **Actualizaciones urgentes** reflejan interacción directa, como escribir, hacer click, presionar, y así sucesivamente.
+* **Actualizaciones de transición** permiten la transición de la interfaz de usuario de una vista a otra.
 
-Urgent updates like typing, clicking, or pressing, need immediate response to match our intuitions about how physical objects behave. Otherwise they feel "wrong". However, transitions are different because the user doesn’t expect to see every intermediate value on screen.
+Las actualizaciones urgentes como escribir, hacer clic o presionar requieren una respuesta inmediata para coincidir con nuestras intuiciones sobre cómo se comportan los objetos físicos. De lo contrario, se sienten "incorrectas". Sin embargo, las transiciones son diferentes porque el usuario no espera ver cada valor intermedio en la pantalla.
 
-For example, when you select a filter in a dropdown, you expect the filter button itself to respond immediately when you click. However, the actual results may transition separately. A small delay would be imperceptible and often expected. And if you change the filter again before the results are done rendering, you only care to see the latest results.
+Por ejemplo, cuando seleccionas un filtro en un menú desplegable, esperas que el propio botón del filtro responda de inmediato cuando haces clic. Sin embargo, los resultados reales pueden transicionar por separado. Un pequeño retraso sería imperceptible y a menudo esperado. Y si cambias el filtro nuevamente antes de que los resultados terminen de renderizarse, solo te importará ver los últimos resultados.
 
-Typically, for the best user experience, a single user input should result in both an urgent update and a non-urgent one. You can use startTransition API inside an input event to inform React which updates are urgent and which are "transitions":
+Típicamente, para tener la mejor experiencia de usuario, una única entrada del usuario debería resultar en una actualización urgente y otra no urgente. Puedes utilizar la API startTransition dentro de un evento de entrada para informar a React qué actualizaciones son urgentes y cuáles son "transiciones":
 
 
 ```js
 import { startTransition } from 'react';
 
-// Urgent: Show what was typed
+// Urgente: Mostrar lo que se escribió
 setInputValue(input);
 
-// Mark any state updates inside as transitions
+// Marcar cualquier actualización de estado dentro como transiciones
 startTransition(() => {
-  // Transition: Show the results
+  // Transición: muestra el resultado
   setSearchQuery(input);
 });
 ```
 
 
-Updates wrapped in startTransition are handled as non-urgent and will be interrupted if more urgent updates like clicks or key presses come in. If a transition gets interrupted by the user (for example, by typing multiple characters in a row), React will throw out the stale rendering work that wasn’t finished and render only the latest update.
+Las actualizaciones envueltas en startTransition se manejan como no urgentes y se interrumpirán si llegan actualizaciones más urgentes, como clics o pulsaciones de teclas. Si una transición se interrumpe por el usuario (por ejemplo, al escribir varios caracteres seguidos), React descartará el trabajo de renderizado obsoleto que no se completó y solo renderizará la última actualización.
 
+* `useTransition`: un gancho (hook) para iniciar transiciones, que incluya un valor para rastrear el estado pendiente.
+* `startTransition`: un método para iniciar transiciones cuando el gancho (hook) no es utilizado.
 
-* `useTransition`: a hook to start transitions, including a value to track the pending state.
-* `startTransition`: a method to start transitions when the hook cannot be used.
+(Las transiciones optarán por el renderizado concurrente, lo cual permite interrumpir la actualización. Si el contenido se suspende de nuevo, las transiciones también indican a React que continúe mostrando el contenido actual mientras renderiza el contenido de la transición en segundo plano. Consulta [Suspense RFC](https://github.com/reactjs/rfcs/blob/main/text/0213-suspense-in-react-18.md) para obtener más información).
 
-Transitions will opt in to concurrent rendering, which allows the update to be interrupted. If the content re-suspends, transitions also tell React to continue showing the current content while rendering the transition content in the background (see the [Suspense RFC](https://github.com/reactjs/rfcs/blob/main/text/0213-suspense-in-react-18.md) for more info).
+[Consulta la documentación de transiciones aquí](/reference/react/useTransition).
 
-[See docs for transitions here](/reference/react/useTransition).
+### Nuevas Funciones Suspense {/*new-suspense-features*/}
 
-### New Suspense Features {/*new-suspense-features*/}
-
-Suspense lets you declaratively specify the loading state for a part of the component tree if it's not yet ready to be displayed:
+Suspense te permite especificar declarativamente el estado de carga para una parte del árbol de componentes si aún no está listo para mostrarse:
 
 ```js
 <Suspense fallback={<Spinner />}>
@@ -155,15 +154,15 @@ Suspense lets you declaratively specify the loading state for a part of the comp
 </Suspense>
 ```
 
-Suspense makes the "UI loading state" a first-class declarative concept in the React programming model. This lets us build higher-level features on top of it.
+Suspense convierte el "estado de carga de la interfaz de usuario" en un concepto declarativo de primera clase en el modelo de programación de React. Esto nos permite construir características de nivel superior sobre él.
 
-We introduced a limited version of Suspense several years ago. However, the only supported use case was code splitting with React.lazy, and it wasn't supported at all when rendering on the server.
+Introdujimos una versión limitada de Suspense hace varios años. Sin embargo, el único caso de uso compatible era la división de código con React.lazy, y no se admitía en absoluto al renderizar en el servidor.
 
-In React 18, we've added support for Suspense on the server and expanded its capabilities using concurrent rendering features.
+En React 18, hemos agregado soporte para Suspense en el servidor y hemos ampliado sus capacidades utilizando funciones de renderizado concurrente.
 
-Suspense in React 18 works best when combined with the transition API. If you suspend during a transition, React will prevent already-visible content from being replaced by a fallback. Instead, React will delay the render until enough data has loaded to prevent a bad loading state.
+Suspense en React 18 funciona mejor cuando se combina con la API de transición. Si suspendes durante una transición, React evitará que el contenido ya visible sea reemplazado por un respaldo. En su lugar, React retrasará el renderizado hasta que se haya cargado suficiente información para evitar un mal estado de carga.
 
-For more, see the RFC for [Suspense in React 18](https://github.com/reactjs/rfcs/blob/main/text/0213-suspense-in-react-18.md).
+Para más información, consulta el RFC para [Suspense en React 18](https://github.com/reactjs/rfcs/blob/main/text/0213-suspense-in-react-18.md).
 
 ### New Client and Server Rendering APIs {/*new-client-and-server-rendering-apis*/}
 
