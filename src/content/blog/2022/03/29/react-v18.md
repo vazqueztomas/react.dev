@@ -2,31 +2,31 @@
 title: "React v18.0"
 ---
 
-March 29, 2022 by [The React Team](/community/team)
+29 de marzo de 2022 por [The React Team](/community/team)
 
 ---
 
 <Intro>
 
-React 18 is now available on npm! In our last post, we shared step-by-step instructions for [upgrading your app to React 18](/blog/2022/03/08/react-18-upgrade-guide). In this post, we'll give an overview of what's new in React 18, and what it means for the future.
+React 18 ya está disponible en npm! En nuestro último artículo, compartimos instrucciones paso a paso para [actualizar tu aplicación a React 18](/blog/2022/03/08/react-18-upgrade-guide). En este artículo, daremos una descripción general de las novedades en React 18 y lo que significa para el futuro.
 
 </Intro>
 
 ---
 
-Our latest major version includes out-of-the-box improvements like automatic batching, new APIs like startTransition, and streaming server-side rendering with support for Suspense.
+Nuestra última versión importante incluye mejoras listas para usar, como el procesamiento por lotes automático, nuevas API como startTransition y renderizado en el servidor con transmisión con soporte para Suspense.
 
-Many of the features in React 18 are built on top of our new concurrent renderer, a behind-the-scenes change that unlocks powerful new capabilities. Concurrent React is opt-in — it's only enabled when you use a concurrent feature — but we think it will have a big impact on the way people build applications.
+Muchas de las características en React 18 se basan en nuestro nuevo renderizador concurrente, un cambio interno que desbloquea nuevas y poderosas capacidades. React Concurrente es opcional, solo se activa cuando se utiliza una característica concurrente, pero creemos que tendrá un gran impacto en la forma en que las personas construyen aplicaciones.
 
-We've spent years researching and developing support for concurrency in React, and we've taken extra care to provide a gradual adoption path for existing users. Last summer, [we formed the React 18 Working Group](/blog/2021/06/08/the-plan-for-react-18) to gather feedback from experts in the community and ensure a smooth upgrade experience for the entire React ecosystem.
+Hemos dedicado años a investigar y desarrollar el soporte para la concurrencia en React, y nos hemos esforzado aún más para ofrecer un camino de adopción gradual para los usuarios existentes. El verano pasado, [formamos el Grupo de Trabajo de React 18](/blog/2021/06/08/the-plan-for-react-18) para recopilar comentarios de expertos en la comunidad y garantizar una experiencia de actualización fluida para todo el ecosistema de React.
 
-In case you missed it, we shared a lot of this vision at React Conf 2021:
+En caso de que te lo hayas perdido, compartimos gran parte de esta visión en React Conf 2021.
 
-* In [the keynote](https://www.youtube.com/watch?v=FZ0cG47msEk&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa), we explain how React 18 fits into our mission to make it easy for developers to build great user experiences
-* [Shruti Kapoor](https://twitter.com/shrutikapoor08) [demonstrated how to use the new features in React 18](https://www.youtube.com/watch?v=ytudH8je5ko&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa&index=2)
-* [Shaundai Person](https://twitter.com/shaundai) gave us an overview of [streaming server rendering with Suspense](https://www.youtube.com/watch?v=pj5N-Khihgc&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa&index=3)
+* En [la presentación principal](https://www.youtube.com/watch?v=FZ0cG47msEk&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa), explicamos cómo React 18 encaja en nuestra misión de facilitar a los desarrolladores la creación de excelentes experiencias de usuario
+* [Shruti Kapoor](https://twitter.com/shrutikapoor08) [demostró cómo utilizar las nuevas características de React 18](https://www.youtube.com/watch?v=ytudH8je5ko&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa&index=2)
+* [Shaundai Person](https://twitter.com/shaundai) nos brindó una descripción general del [renderizado en tiempo real en el servidor con Suspense](https://www.youtube.com/watch?v=pj5N-Khihgc&list=PLNG_1j3cPCaZZ7etkzWA7JfdmKWT0pMsa&index=3)
 
-Below is a full overview of what to expect in this release, starting with Concurrent Rendering.
+A continuación se muestra una descripción completa de lo que puedes esperar en esta versión, comenzando con el Renderizado Concurrente.
 
 <Note>
 
